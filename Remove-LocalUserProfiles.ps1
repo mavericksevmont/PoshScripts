@@ -2,7 +2,7 @@ function Remove-LocalUserProfiles {
 <#
 
      Original script: OneScript Team
-     Modified by: Maverick Sevmont on July 18th, 2018
+     Modified by: Maverick Sevmont on July 18th, 2018: https://gallery.technet.microsoft.com/scriptcenter/Remove-Old-Local-User-080438f6
      Notes: Thanks to OneScript Team for the original script: https://gallery.technet.microsoft.com/scriptcenter/How-to-delete-user-d86ffd3c/view/Discussions/0
      Modifications:
      1) Enclosed script as a function
