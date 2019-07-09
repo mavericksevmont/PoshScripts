@@ -53,7 +53,7 @@ function Invoke-Ping {
     # Create a list of computers that successfully responded to Test-Connection
 
 .LINK
-    https://gallery.technet.microsoft.com/scriptcenter/Invoke-Ping-Test-in-b553242a
+    https://gallery.technet.microsoft.com/scriptcenter/Invoke-Ping-Parallel-check-edacc6b9
 
 .FUNCTIONALITY
     Computers
