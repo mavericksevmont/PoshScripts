@@ -1,5 +1,64 @@
-# Work in progress
+
 function Get-InstalledApp {
+
+#requires -version 5.1
+
+<#
+.SYNOPSIS
+    Search for a specific installed application version with wmi, registry keys and filepath.
+.DESCRIPTION
+    Find a specific application with fileversion by using wmi, reg key search and by filepath.
+.PARAMETER <WMI>
+    Switch to enable WMI search. It activates mandatory AppName and AppVersion parameters.
+.PARAMETER <Registry>
+   Switch to enable Registry search. It activates mandatory AppName and AppVersion parameters.
+.PARAMETER <File>
+    Switch to enable WMI search. It activates mandatory AppName and AppVersion parameters.
+.PARAMETER <AppName>
+    Specify the Application's name (ARPDisplayName) to be found. If using, the Appversion parameter is mandatory.
+.PARAMETER <AppVersion>
+    Specify the version number (DisplayVersion) of the file to be found. If using, the AppName parameter is mandatory.
+.PARAMETER <FilePath>
+    Specify the file's full path for the application to check if it exists. If using, the FileVersion parameter is mandatory.
+.PARAMETER <FileVersion>
+    Specify the version to the application file to check if it exists. If using, the FilePath parameter is mandatory.
+  
+.EXAMPLE
+    $ApplicationName        = 'Notepad++'
+    $ApplicationVersion     = '6.9.2'
+    $ApplicationFilePath    = 'C:\Program Files (x86)\Notepad++\notepad++.exe'
+    $ApplicationFileVersion = '6.92'
+
+    Get-InstalledApp -WMI -AppName $ApplicationName -AppVersion $ApplicationVersion
+    Get-InstalledApp -Registry -AppName $ApplicationName -AppVersion $ApplicationVersion
+    Get-InstalledApp -WMI -Registry -AppName $ApplicationName -AppVersion $ApplicationVersion
+    Get-InstalledApp -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+    Get-InstalledApp -WMI -Registry -File -AppName $ApplicationName -AppVersion $ApplicationVersion -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+
+OUTPUT EXAMPLE:
+
+    Name          : Notepad++
+    Version       : 6.9.2
+    FilePath      : C:\Program Files (x86)\Notepad++\notepad++.exe
+    FileVersion   : 6.92
+    Found         : True
+    WMI           : True
+    Regx64        : False
+    Regx32        : True
+    FilePathFound : True
+
+.NOTES
+    Version:        1.0
+        Authors:        Erick Sevilla & John Murillo
+        Creation Date:  March/09/2021
+        Purpose/Change: Initial script development
+
+    Version:        2.0
+        Authors:        Erick Sevilla
+        Creation Date:  March/23/2021
+        Purpose/Change: Added switches for WMI/Registry/File to declare searches on demand
+#>
+
 [CmdletBinding()]
 Param (
         [switch]$WMI,
@@ -111,31 +170,3 @@ if ($File)  {
 
 
 }
-
-# TEST AREA
-    $ApplicationName        = 'Notepad++'
-    $ApplicationVersion     = '6.9.2'
-    $ApplicationFilePath    = 'C:\Program Files (x86)\Notepad++\notepad++.exe'
-    $ApplicationFileVersion = '6.92'
-
-    Get-InstalledApp -WMI -AppName $ApplicationName -AppVersion $ApplicationVersion
-
-    # Get-InstalledApp -WMI -Registry  -AppName $ApplicationName -AppVersion $ApplicationVersion
-    # Get-InstalledApp -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
-    # Get-InstalledApp -WMI -Registry  -AppName $ApplicationName -AppVersion $ApplicationVersion -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
-    # Get-InstalledApp -WMI -AppName $ApplicationName -AppVersion $ApplicationVersion  -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
-    # Get-InstalledApp -Registry -AppName $ApplicationName -AppVersion $ApplicationVersion  -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
-    # Get-InstalledApp -Registry -WMI  -AppName $ApplicationName -AppVersion $ApplicationVersion -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
-    # Get-InstalledApp -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion -Registry  -AppName $ApplicationName -AppVersion $ApplicationVersion 
-
-    # The following should fail, you may play with combinations:
-
-    # Get-InstalledApp -WMI
-    # Get-InstalledApp -File 
-    # Get-InstalledApp -Registry 
-    # Get-InstalledApp -WMI -AppName ' ' -AppVersion 'test'
-    # Get-InstalledApp -WMI -AppName ' ' -AppVersion 'test'
-    # Get-InstalledApp -File -AppName
-    # Get-InstalledApp -Registry -FilePath ' ' -FileVersion ' '
-    # Get-InstalledApp -Registry -FilePath
-    # Get-InstalledApp -Registry -FilePath -Fileversion
