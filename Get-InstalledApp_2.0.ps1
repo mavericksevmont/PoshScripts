@@ -8,29 +8,32 @@ Param (
         )
 
  DynamicParam {
- $switches0 = @($WMI,$Registry) 
+ $switches0 = @($WMI,$Registry)
+ $paramDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
+
+
 If ($switches0 -contains $true) {
     $SubAttribute0 = New-Object System.Management.Automation.ParameterAttribute
     $SubAttribute1 = New-Object System.Management.Automation.ValidateNotNullOrEmptyAttribute
-    $paramDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
-    $attributeCollection = new-object System.Collections.ObjectModel.Collection[System.Attribute]
+         $attributeCollection = new-object System.Collections.ObjectModel.Collection[System.Attribute]
     $attributeCollection.Add($SubAttribute0) ; $attributeCollection.Add($SubAttribute1)
     $PAC1 = New-Object System.Management.Automation.RuntimeDefinedParameter('AppName',    [string], $attributeCollection)
     $PAC2 = New-Object System.Management.Automation.RuntimeDefinedParameter('AppVersion', [string], $attributeCollection)
     $paramDictionary.Add('AppName', $PAC1)
     $paramDictionary.Add('AppVersion', $PAC2)
+    
     }
 
 if ($File) {
     $SubAttribute2 = New-Object System.Management.Automation.ParameterAttribute
     $SubAttribute3 = New-Object System.Management.Automation.ValidateNotNullOrEmptyAttribute
-    $paramDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
-    $attributeCollection = new-object System.Collections.ObjectModel.Collection[System.Attribute]
+         $attributeCollection = new-object System.Collections.ObjectModel.Collection[System.Attribute]
     $attributeCollection.Add($SubAttribute2) ; $attributeCollection.Add($SubAttribute3)
     $PAC3 = New-Object System.Management.Automation.RuntimeDefinedParameter('FilePath',    [string], $attributeCollection)
     $PAC4 = New-Object System.Management.Automation.RuntimeDefinedParameter('FileVersion', [string], $attributeCollection)
     $paramDictionary.Add('FilePath', $PAC3)
     $paramDictionary.Add('FileVersion', $PAC4)
+     
     } 
 
     return $paramDictionary 
@@ -118,4 +121,7 @@ $objects #Output results as objects
     $ApplicationFileVersion = '6.92'
 
 
-    Get-InstalledApp -WMI -AppName $ApplicationName -AppVersion $ApplicationVersion -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+    Get-InstalledApp -WMI -AppName $ApplicationName -AppVersion $ApplicationVersion #-File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+    Get-InstalledApp -WMI  -AppName $ApplicationName -AppVersion $ApplicationVersion -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+
+     Get-InstalledApp -WMI -AppName $ApplicationName -AppVersion $ApplicationVersion -Fil
