@@ -8,31 +8,29 @@ Param (
         )
 
  DynamicParam {
+
  $switches0 = @($WMI,$Registry)
  $paramDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
 
-
-If ($switches0 -contains $true) {
+if ($switches0 -contains $true) {
     $SubAttribute0 = New-Object System.Management.Automation.ParameterAttribute
     $SubAttribute1 = New-Object System.Management.Automation.ValidateNotNullOrEmptyAttribute
-         $attributeCollection = new-object System.Collections.ObjectModel.Collection[System.Attribute]
+    $attributeCollection = new-object System.Collections.ObjectModel.Collection[System.Attribute]
     $attributeCollection.Add($SubAttribute0) ; $attributeCollection.Add($SubAttribute1)
     $PAC1 = New-Object System.Management.Automation.RuntimeDefinedParameter('AppName',    [string], $attributeCollection)
     $PAC2 = New-Object System.Management.Automation.RuntimeDefinedParameter('AppVersion', [string], $attributeCollection)
-    $paramDictionary.Add('AppName', $PAC1)
-    $paramDictionary.Add('AppVersion', $PAC2)
+    $paramDictionary.Add('AppName', $PAC1) ; $paramDictionary.Add('AppVersion', $PAC2)
     
     }
 
 if ($File) {
     $SubAttribute2 = New-Object System.Management.Automation.ParameterAttribute
     $SubAttribute3 = New-Object System.Management.Automation.ValidateNotNullOrEmptyAttribute
-         $attributeCollection = new-object System.Collections.ObjectModel.Collection[System.Attribute]
+    $attributeCollection = new-object System.Collections.ObjectModel.Collection[System.Attribute]
     $attributeCollection.Add($SubAttribute2) ; $attributeCollection.Add($SubAttribute3)
     $PAC3 = New-Object System.Management.Automation.RuntimeDefinedParameter('FilePath',    [string], $attributeCollection)
     $PAC4 = New-Object System.Management.Automation.RuntimeDefinedParameter('FileVersion', [string], $attributeCollection)
-    $paramDictionary.Add('FilePath', $PAC3)
-    $paramDictionary.Add('FileVersion', $PAC4)
+    $paramDictionary.Add('FilePath', $PAC3) ; $paramDictionary.Add('FileVersion', $PAC4)
      
     } 
 
@@ -42,7 +40,6 @@ if ($File) {
 
 process {
 
-#Messages for error handling
 $ExceptionMessage0  = 'Please select one or more switches: WMI, Registry or File'
 $ExceptionMessage1  = 'Please provide values for both -AppName and -AppVersion parameters'
 $ExceptionMessage2  = 'Please provide values for both -FilePath and -FileVersion parameters'
@@ -56,15 +53,16 @@ $FilePath    = $PSBoundParameters.FilePath
 $FileVersion = $PSBoundParameters.FileVersion
 
 if ($WMI -or $Registry) { 
-If ([string]::IsNullOrWhiteSpace($AppName) -or [string]::IsNullOrWhiteSpace($AppVersion)) {Write-Error $ExceptionMessage1;Return}
-$Objects | Add-Member -MemberType NoteProperty -Name Name        -Value $AppName | Out-Null
-$Objects | Add-Member -MemberType NoteProperty -Name Version     -Value $AppVersion | Out-Null 
+
+    if ( [string]::IsNullOrWhiteSpace($AppName) -or [string]::IsNullOrWhiteSpace($AppVersion) ) {Write-Error $ExceptionMessage1;Return}
+    $Objects | Add-Member -MemberType NoteProperty -Name Name    -Value $AppName    | Out-Null
+    $Objects | Add-Member -MemberType NoteProperty -Name Version -Value $AppVersion | Out-Null 
 }
 
 if ($File){ 
-If ([string]::IsNullOrWhiteSpace($FilePath) -or [string]::IsNullOrWhiteSpace($FileVersion)) {Write-Error $ExceptionMessage2;Return}
-$Objects | Add-Member -MemberType NoteProperty -Name FilePath    -Value $FilePath
-$Objects | Add-Member -MemberType NoteProperty -Name FileVersion -Value $FileVersion }
+    if ( [string]::IsNullOrWhiteSpace($FilePath) -or [string]::IsNullOrWhiteSpace($FileVersion) ) {Write-Error $ExceptionMessage2;Return}
+    $Objects | Add-Member -MemberType NoteProperty -Name FilePath    -Value $FilePath
+    $Objects | Add-Member -MemberType NoteProperty -Name FileVersion -Value $FileVersion }
 
 # WMI search 
 if ($WMI) {
@@ -87,27 +85,27 @@ $Regx64_Installed   =   $x64IntallerRegKeys |
 $Regx32_Installed   =   $x32IntallerRegKeys | 
                         Where { ($_.GetValue('DisplayName') -eq "$AppName") -and ($_.GetValue('DisplayVersion') -eq "$AppVersion")}
 
-if ($Regx64_Installed) {$Regx64 = $true} else {$Regx64 = $false}
-if ($Regx32_Installed) {$Regx32 = $true} else {$Regx32 = $false}
-$Objects | Add-Member -MemberType NoteProperty -Name Regx64 -Value $Regx64
-$Objects | Add-Member -MemberType NoteProperty -Name Regx32 -Value $Regx32
+    if ($Regx64_Installed) {$Regx64 = $true} else {$Regx64 = $false}
+    if ($Regx32_Installed) {$Regx32 = $true} else {$Regx32 = $false}
+        $Objects | Add-Member -MemberType NoteProperty -Name Regx64 -Value $Regx64
+        $Objects | Add-Member -MemberType NoteProperty -Name Regx32 -Value $Regx32
 
 } # End Reg
 
 # Filepath search
 if ($File)  {
-$FoundFile      = try {Get-ItemProperty $FilePath -ErrorAction Stop} catch {$FoundFile = $null}
-$FoundVersion   = $FoundFile.VersionInfo.FileVersion
-if ($FoundFile -and ($FileVersion -eq $FoundVersion) ) 
-{$FileB = $true} else {$FileB = $false}
-$Objects | Add-Member -MemberType NoteProperty -Name FilePathFound -Value $FileB 
-} else {$FileB = $null} # end filepath search logic
+    $FoundFile    = try {Get-ItemProperty $FilePath -ErrorAction Stop} catch {$FoundFile = $null}
+    $FoundVersion = $FoundFile.VersionInfo.FileVersion
+        if ($FoundFile -and ($FileVersion -eq $FoundVersion) ) {$FileB = $true} else {$FileB = $false}
+            $Objects | Add-Member -MemberType NoteProperty -Name FilePathFound -Value $FileB
 
-$Results = @($WMIFound,$Regx64,$Regx32,$FileB) 
-if ($Results -contains $true) {$Found  = $true} else {$Found  = $false}
-$Objects | Add-Member -MemberType NoteProperty -Name Found -Value $Found
+} else {$FileB = $null} # end Filepath search
 
-$objects #Output results as objects
+    $Results = @($WMIFound,$Regx64,$Regx32,$FileB) 
+    if ($Results -contains $true) {$Found  = $true} else {$Found  = $false}
+        $Objects | Add-Member -MemberType NoteProperty -Name Found -Value $Found
+
+        $objects #Output results as objects
 
 }
 
@@ -120,8 +118,24 @@ $objects #Output results as objects
     $ApplicationFilePath    = 'C:\Program Files (x86)\Notepad++\notepad++.exe'
     $ApplicationFileVersion = '6.92'
 
+    Get-InstalledApp -WMI -AppName $ApplicationName -AppVersion $ApplicationVersion
 
-    Get-InstalledApp -WMI -AppName $ApplicationName -AppVersion $ApplicationVersion #-File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
-    Get-InstalledApp -WMI  -AppName $ApplicationName -AppVersion $ApplicationVersion -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+    # Get-InstalledApp -WMI -Registry  -AppName $ApplicationName -AppVersion $ApplicationVersion
+    # Get-InstalledApp -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+    # Get-InstalledApp -WMI -Registry  -AppName $ApplicationName -AppVersion $ApplicationVersion -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+    # Get-InstalledApp -WMI -AppName $ApplicationName -AppVersion $ApplicationVersion  -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+    # Get-InstalledApp -Registry -AppName $ApplicationName -AppVersion $ApplicationVersion  -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+    # Get-InstalledApp -Registry -WMI  -AppName $ApplicationName -AppVersion $ApplicationVersion -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion
+    # Get-InstalledApp -File -FilePath $ApplicationFilePath -FileVersion $ApplicationFileVersion -Registry  -AppName $ApplicationName -AppVersion $ApplicationVersion 
 
-     Get-InstalledApp -WMI -AppName $ApplicationName -AppVersion $ApplicationVersion -Fil
+    # The following should fail, you may play with combinations:
+
+    # Get-InstalledApp -WMI
+    # Get-InstalledApp -File 
+    # Get-InstalledApp -Registry 
+    # Get-InstalledApp -WMI -AppName ' ' -AppVersion 'test'
+    # Get-InstalledApp -WMI -AppName ' ' -AppVersion 'test'
+    # Get-InstalledApp -File -AppName
+    # Get-InstalledApp -Registry -FilePath ' ' -FileVersion ' '
+    # Get-InstalledApp -Registry -FilePath
+    # Get-InstalledApp -Registry -FilePath -Fileversion
