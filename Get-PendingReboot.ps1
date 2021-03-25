@@ -1,8 +1,5 @@
 <#
 Name: Get-PendingRebootStatus.ps1
-Contact: Erick Sevilla <marco-polo-erick.sevilla@atos.net>
-Linkedin: https://linkedin.com/in/ericksevilla/
-Technet: https://goo.gl/1L139Q
 Purpose: Pass butter and Get if server is pending reboot status, checks 3 reg keys and wmi. Also checks the last boot and uptime.
 
 Instructions:   Populate Servers.txt with server list, open PowerShell as admin, cd to script's location and run: .\Get-PendingReboot.ps1
