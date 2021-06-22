@@ -12,9 +12,9 @@ function Invoke-SystemAccount {
 .PARAMETER <Command>
     Use it to declare the PowerShell command you want to run, wrap it in parenthesis or quotes.
 .PARAMETER <File>
-   Switch to enable Registry search. It activates mandatory AppName and AppVersion parameters.
+   Use it to declare a PowerShell script you want to run, use full or relative path.
 .PARAMETER <x32>
-    Switch to enable WMI search. It activates mandatory AppName and AppVersion parameters.
+    Switch to run PowerShell as x86, default is x64.
 
   
 .EXAMPLE
