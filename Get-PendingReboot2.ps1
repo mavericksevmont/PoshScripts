@@ -696,15 +696,15 @@ function Invoke-Parallel {
 }
 
 #$StartTime = $(get-date -f yyyy-MM-dd-HH-mm-ss)
-$Servers = Get-content $PSScriptRoot\Servers.txt
+$Servers = Get-content $PSScriptRoot\Hosts.txt
 $DateTime = $(get-date -f yyyy-MM-dd-HHmmss)
 
 $Servers | Invoke-Parallel -ImportVariables -ImportFunctions -ScriptBlock {
 Get-PendingRebootStatus -ComputerName $_ -OutVariable RebootStatsResults
-$RebootStatsResults | Select * | Export-Csv "D:\ES\AutoReps\Get-PendingReboot\PendingReboots_$DateTime.csv" -Force -NoTypeInformation -Append
+$RebootStatsResults | Select * | Export-Csv "$PSScripRoot\Get-PendingReboot\PendingReboots_$DateTime.csv" -Force -NoTypeInformation -Append
 }
 
-Move-Item -Path "D:\ES\AutoReps\Get-PendingReboot\PendingReboots_$DateTime.csv" -Destination "D:\Atos\Tooling & Automation - PendingReboot\PendingReboots_$DateTime.csv" -Force
+#Move-Item -Path "D:\ES\AutoReps\Get-PendingReboot\PendingReboots_$DateTime.csv" -Destination "D:\Atos\Tooling & Automation - PendingReboot\PendingReboots_$DateTime.csv" -Force
 
 #$FinishTime = $(get-date -f yyyy-MM-dd-HH-mm-ss)
 #"Start: $StartTime Finish: $FinishTime"
