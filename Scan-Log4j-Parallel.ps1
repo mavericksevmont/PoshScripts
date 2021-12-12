@@ -1,9 +1,9 @@
 # Log4j Microsoft Windows PowerShell    
 # Find Log4j library instances in all Windows OS Drives and Directories
-#  Requires Invoke-Parallel.ps1 https://github.com/mavericksevmont/Invoke-Parallel
+#  Requires Rambling's Invoke-Parallel.ps1 https://github.com/mavericksevmont/Invoke-Parallel
 $Cred = Get-Credential
 $Hosts = Get-Content $PSScriptRoot\Hosts.txt
-Import-Module $PSScriptRoot\Invoke-Parallel.ps1 # Get this from fork and add it in same directory: https://github.com/mavericksevmont/Invoke-Parallel
+Import-Module $PSScriptRoot\Invoke-Parallel.ps1 # Get this script from Requires Rambling's fork and add it in same directory: https://github.com/mavericksevmont/Invoke-Parallel
 
 $Hosts | Invoke-Parallel -ScriptBlock {
 
