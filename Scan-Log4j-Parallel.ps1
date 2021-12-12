@@ -3,7 +3,7 @@
 #  Requires Warren F's Invoke-Parallel.ps1 https://github.com/mavericksevmont/Invoke-Parallel
 $Cred = Get-Credential
 $Hosts = Get-Content $PSScriptRoot\Hosts.txt
-Import-Module $PSScriptRoot\Invoke-Parallel.ps1 # Get this script from Requires Warren F's fork and add it in same directory: https://github.com/mavericksevmont/Invoke-Parallel
+Import-Module $PSScriptRoot\Invoke-Parallel.ps1 # Get this script and add it to same directory: https://github.com/mavericksevmont/Invoke-Parallel
 
 $Hosts | Invoke-Parallel -ScriptBlock {
 
