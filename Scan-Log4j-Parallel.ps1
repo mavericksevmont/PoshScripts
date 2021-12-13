@@ -15,4 +15,4 @@ select @{n='Server';e={$env:COMPUTERNAME}},BaseName,Directory,CreationTimeUtc,La
 
 } -OutVariable Results -ImportVariables
 
-$Results | Export-csv $PSScriptRoot\Resultslog4_HTM.csv -Force -NoTypeInformation
+$Results | Export-csv $PSScriptRoot\Resultslog4.csv -Force -NoTypeInformation
