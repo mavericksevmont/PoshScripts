@@ -23,12 +23,12 @@ Do {
      $CurrentTry++;
      Start-Sleep -Milliseconds $SleepInterval
      Try   { [Microsoft.VisualBasic.Interaction]::AppActivate($windowName) ; $windowFound = $true; }
-     Catch { Write-Information "[$currentTry out of $Retries] Searching for Window with title '$WindowName'" ; $WindowFound = $false }
+     Catch { Write-Verbose "[$currentTry out of $Retries] Waiting for Window with title '$WindowName'" ; $WindowFound = $false }
    } While ($CurrentTry -lt $retries -and $WindowFound -eq $false)
      return $WindowFound
 }
 
-if ( Find-Window -WindowName $Window -Retries $Retries ) {
+if ( Find-Window -WindowName $Window -Retries $Retries -Verbose ) {
         Start-Sleep -Milliseconds 250
         [System.Windows.Forms.SendKeys]::SendWait($PIN)
         [System.Windows.Forms.SendKeys]::SendWait('{TAB}')
