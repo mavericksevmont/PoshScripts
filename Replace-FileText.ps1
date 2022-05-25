@@ -3,10 +3,10 @@ function Replace-FileText {
 [CmdletBinding()]
 [Alias("rft")]
 Param($FileName,$SearchFor,$ReplaceWith)
-$Files = gci $FileName -Recurse -ErrorAction Stop
-$Files | % {(gc $_) -replace "$Find","$ReplaceWith" | sc $_.fullname }
+$Files = Get-ChildItem $FileName -Recurse -ErrorAction Stop
+$Files | ForEach-Object {(Get-Content $_) -Replace "$Find","$ReplaceWith" | Set-Content $_.fullname }
 }
 
-# Works for multiple files and/or directories. Examples:
-rft -FileName "C:\Tests\FileName*.txt" -SearchFor 'OldWord' -ReplaceWith 'NewWord'
-Replace-FileText -FileName "C:\Tests*\FileName*.txt" -SearchFor 'OldWord' -ReplaceWith 'NewWord'
+# Examples:
+# rft -FileName "C:\Tests\FileName*.txt" -SearchFor 'OldWord' -ReplaceWith 'NewWord'
+# Replace-FileText -FileName "C:\Tests\FileName*.txt" -SearchFor 'OldWord' -ReplaceWith 'NewWord'
