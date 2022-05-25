@@ -3,7 +3,7 @@ function Replace-FileText {
 [Alias("rft")]
 Param($FileName,$SearchFor,$ReplaceWith)
 $Files = Get-ChildItem $FileName -Recurse -ErrorAction Stop
-$Files | % {(Get-Content $_) -Replace "$SearchFor","$ReplaceWith" | Set-Content $_.fullname }
+$Files | % {(Get-Content $_) -Replace "$SearchFor","$ReplaceWith" | Set-Content $_.FullName }
 }
 
 # Examples:
