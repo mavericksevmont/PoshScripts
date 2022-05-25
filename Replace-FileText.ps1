@@ -1,10 +1,9 @@
-
 function Replace-FileText {
 [CmdletBinding()]
 [Alias("rft")]
 Param($FileName,$SearchFor,$ReplaceWith)
 $Files = Get-ChildItem $FileName -Recurse -ErrorAction Stop
-$Files | ForEach-Object {(Get-Content $_) -Replace "$Find","$ReplaceWith" | Set-Content $_.fullname }
+$Files | % {(Get-Content $_) -Replace "$SearchFor","$ReplaceWith" | Set-Content $_.fullname }
 }
 
 # Examples:
