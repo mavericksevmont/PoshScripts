@@ -1,5 +1,5 @@
 # GET RESULTS DIRECTLY THROUGH URL FILTER
-
+# Documentation: https://docs.ansible.com/ansible-tower/latest/html/towerapi/api_ref.html
 $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $headers.Add("Authorization", "Bearer SuperSecretTokenGoesHere")
 $headers.Add("ask_credential_on_launch", "false") 
